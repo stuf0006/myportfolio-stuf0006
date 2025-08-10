@@ -4,6 +4,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const navItems = navLinks.querySelectorAll("a");
     const form = document.getElementById("contact-form");
     const projectCards = document.querySelectorAll(".project-card");
+    const backToTop = document.getElementById("back-to-top");
+    const modal = document.getElementById("project-modal");
+    const modalTitle = document.getElementById("modal-title");
+    const modalDesc = document.getElementById("modal-desc");
+    const modalLink = document.getElementById("modal-link");
+    const closeBtn = document.querySelector(".close");
+    const readMoreBtns = document.querySelectorAll(".read-more");
 
     // Hamburger menu toggle with accessibility
     const toggleMenu = () => {
@@ -98,5 +105,46 @@ document.addEventListener("DOMContentLoaded", () => {
 
     projectCards.forEach(card => {
         observer.observe(card);
+    });
+
+    // Back to Top functionality
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 300) {
+            backToTop.style.display = 'block';
+        } else {
+            backToTop.style.display = 'none';
+        }
+    });
+
+    backToTop.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // Project Modal functionality
+    readMoreBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const card = btn.parentElement;
+            modalTitle.textContent = card.dataset.title;
+            modalDesc.textContent = card.dataset.desc;
+            modalLink.href = card.dataset.link;
+            modal.style.display = 'block';
+            modal.focus();
+        });
+    });
+
+    closeBtn.addEventListener('click', () => {
+        modal.style.display = 'none';
+    });
+
+    window.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
+
+    modal.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            modal.style.display = 'none';
+        }
     });
 });
